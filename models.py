@@ -1,4 +1,6 @@
-# creates a dictionary with all fluent commands
+# creates a dictionary with all fluent Models
+
+# ! NEEDS TO BE COMPLETED
 
 
 models = {

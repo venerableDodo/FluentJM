@@ -1,0 +1,81 @@
+(set! checkpoint/check-filename './AC3D.txt')
+; ------------------- READ CASE -------------------
+read-case simple.cas.h5
+; ------------------- ACTIVATE MODELS -------------------
+/define/models/viscous ke-realizable
+yes
+/define/models/viscous/near-wall-treatment enhanced-wall-treatment
+yes
+/define/models energy
+yes
+no
+no
+no
+yes
+/define/models/radiation discrete-ordinates
+yes
+4
+4
+4
+4
+; ------------------- RESIDUALS -------------------
+/solve/monitors/residual convergence-criteria
+1e-05
+1e-05
+1e-05
+1e-05
+1e-05
+1e-05
+1e-10
+1e-10
+; ------------------- Operating Conditions -------------------
+/define/operating-conditions operating-pressure
+100000.0
+;------------------- Schemes -------------------
+/solve/set/discretization-scheme pressure
+14
+/solve/set gradient-schem
+no
+no
+/solve/set p-v-coupling
+20
+/solve/set/pseudo-time-method formulation
+0
+;------------------- INITIALIZE -------------------
+/solve/initialize initialize-flow
+;------------------- 1 ITERATION ROUND -------------------
+/solve/set/discretization-scheme mom
+0
+solve/set/discretization-scheme k
+0
+/solve/set/discretization-scheme epsilon
+0
+solve/set/discretization-scheme temperature
+0
+solve/set/discretization-scheme disco
+0
+/define/models/radiation radiation-model-parameters
+50
+it 100
+yes
+;------------------- 2 ITERATION ROUND -------------------
+/solve/set/discretization-scheme mom
+1
+solve/set/discretization-scheme k
+1
+/solve/set/discretization-scheme epsilon
+1
+solve/set/discretization-scheme temperature
+1
+solve/set/discretization-scheme disco
+1
+/define/models/radiation radiation-model-parameters
+10
+it 2000
+yes
+;------------------- SAVING -------------------
+write-data converged.dat.gz
+write-case converged.cas.gz
+;------------------- CLOSING FLUENT -------------------
+exit
+yes
